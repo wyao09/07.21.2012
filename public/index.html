@@ -1,0 +1,28 @@
+<html>
+    <body>
+        <script type="text/javascript" src="zepto.js"></script>
+
+        <script type="text/javascript">
+
+        function SyncClock(options){}
+        SyncClock.prototype = {
+
+        };
+
+        SyncClock.prototype.sync = function() {
+            var request = $.ajax({
+                url: '/timestamp',
+                success: this.success,
+                data: {t: Date.now()}
+            });
+        };
+
+        SyncClock.prototype.success = function(response, status, xhr){
+            console.log(arguments);
+        };
+
+        var clock = new SyncClock();
+        clock.sync();
+        </script>
+    </body>
+</html>
