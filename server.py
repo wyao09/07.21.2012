@@ -12,9 +12,11 @@ server.py [port (defaults to 8000)]
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
 IP = ''
 
+track = 1
+
 class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
-    track = 1
     def do_GET(self):
+        global track
         if self.path.startswith('/timestamp'):
             masterTime = 1000 * time.time()
 
