@@ -2,21 +2,23 @@ import SocketServer
 import SimpleHTTPServer
 import time
 import urlparse
+import sys
 
 """
 run with: python server.py
 """
 
-PORT = 8000
+PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
 IP = ''
 
 class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path.startswith('/timestamp'):
-            masterTime = time.time() * 1000
+            masterTime = 1000 * time.time()
 
             parsed_path = urlparse.urlparse(self.path)
-            clientTime = parsed_path.query.split('=')[1]
+            pieces = parsed_path.query.split('=')
+            clientTime = pieces[1] if len(pieces) >= 2 else 0
 
             diff = int(masterTime) - int(clientTime)
 
