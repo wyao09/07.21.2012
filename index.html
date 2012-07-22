@@ -1,5 +1,7 @@
 <html>
     <body>
+        <h1 id="timer"></h1>
+
         <audio controls="controls">
             <source src="audio/Track_10.MP3" type="audio/mpeg" />
         </audio>
@@ -48,7 +50,7 @@
 
             this.latencies.push({
                 there: +response[0],
-                back: returnTimestamp - response[1]
+                back: returnTimestamp - (+response[1])
             });
 
             this.numCallsMade++;
@@ -65,7 +67,8 @@
                     return a + b.back;
                 }, recentLatencies[0].back) / recentLatencies.length;
 
-                console.log(this);
+                this.clockDiff = this.backAvg + (Date.now() - response[1]);
+                this.syncedCallback.apply(this);
                 return;
             }
 
@@ -81,7 +84,14 @@
 
         var clock = new SyncClock();
         clock.sync(function(){
+            var self = this;
             console.log('clock is synced');
+
+            setInterval(function(){
+                var timer = document.getElementById('timer');
+
+                timer.innerHTML = (Date.now()) + self.clockDiff;
+            }, 1000);
         });
         </script>
     </body>
