@@ -3,6 +3,7 @@ import SimpleHTTPServer
 import time
 import urlparse
 import sys
+from os import curdir, sep
 
 """
 server.py [port (defaults to 8000)]
@@ -27,7 +28,12 @@ class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write('%s|%lf' % (diff,masterTime))
         else:
-            pass
+            f = open(curdir + sep + 'index.html')
+            self.send_response(200)
+            self.send_header('Content-type','text/html')
+            self.end_headers()
+            self.wfile.write(f.read())
+            f.close()
         return
 
 httpd = SocketServer.ThreadingTCPServer((IP, PORT),CustomHandler)
