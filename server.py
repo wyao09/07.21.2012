@@ -27,10 +27,17 @@ class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             self.send_header('Content-type','application/json')
             self.end_headers()
             self.wfile.write('"%s|%lf"' % (diff,masterTime))
-        else:
+        elif self.path.startswith('/index.html'):
             f = open(curdir + sep + 'index.html')
             self.send_response(200)
             self.send_header('Content-type','text/html')
+            self.end_headers()
+            self.wfile.write(f.read())
+            f.close()
+        else:
+            f = open(curdir + self.path)
+            self.send_response(200)
+            self.send_header('Content-type','audio/mpeg')
             self.end_headers()
             self.wfile.write(f.read())
             f.close()
