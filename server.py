@@ -36,6 +36,12 @@ class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(f.read())
             f.close()
+        elif self.path.startswith('/events'):
+            f = open(curdir + '/events.json')
+            self.send_response(200)
+            self.send_header('Content-type','application/json')
+            self.end_headers()
+            self.wfile.write(f.read())
         else:
             f = open(curdir + sep + 'index.html')
             self.send_response(200)
