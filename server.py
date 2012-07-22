@@ -8,15 +8,13 @@ from os import curdir, sep
 """
 server.py [port (defaults to 8000)]
 """
+import random
 
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
 IP = ''
 
-track = 1
-
 class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def do_GET(self):
-        global track
         if self.path.startswith('/timestamp'):
             masterTime = 1000 * time.time()
 
@@ -33,8 +31,7 @@ class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             self.wfile.write('%s|%lf' % (diff,masterTime))
         # Get method for specific audio file here
         elif self.path.endswith('.MP3') or self.path.endswith('.mid'):
-            f = open(curdir + str(track) + '.MP3')
-            track = (track + 1 ) % 5
+            f = open(curdir + str(random.randint(1,4)) + '.MP3')
             self.send_response(200)
             self.send_header('Content-type','audio/mpeg')
             self.end_headers()
