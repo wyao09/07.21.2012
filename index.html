@@ -2,7 +2,10 @@
     <body>
         <h1 id="timer"></h1>
 
-        <audio controls="controls" preload>
+        <input type="text" id="timestamp_text" /><button onclick="javascript:updateTime();">Update</button>
+        <br/>
+
+        <audio id="audio_" controls="controls" preload>
             <source src="audio/Track_10.MP3" type="audio/mpeg" />
         </audio>
 
@@ -83,6 +86,13 @@
             }
         };
 
+        SyncClock.prototype.now = function(){
+            return Date.now() + this.clockDiff;
+        };
+
+        window.startTime = null;
+        window.timerTimeout = null;
+
         var clock = new SyncClock();
         clock.sync(function(){
             var self = this;
@@ -90,10 +100,22 @@
 
             setInterval(function(){
                 var timer = document.getElementById('timer');
+                timer.innerHTML = self.now();
 
-                timer.innerHTML = (Date.now()) + self.clockDiff;
+                if (!window.timerTimeout && window.startTime){
+                    window.timerTimeout = setTimeout(function(){
+                        var audio = document.getElementById('audio_');
+                        audio.play();
+                    }, (startTime - self.now()));
+                }
             }, 1000);
         });
+
+        function updateTime(){
+            var el = document.getElementById('timestamp_text');
+
+            window.startTime = el.value;
+        }
         </script>
     </body>
 </html>
