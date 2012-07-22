@@ -5,7 +5,7 @@ import urlparse
 import sys
 
 """
-run with: python server.py
+server.py [port (defaults to 8000)]
 """
 
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
@@ -25,7 +25,7 @@ class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type','application/json')
             self.end_headers()
-            self.wfile.write(diff)
+            self.wfile.write('%s|%lf' % (diff,masterTime))
         else:
             pass
         return
