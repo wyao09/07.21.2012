@@ -8,17 +8,17 @@ def sayHello():
 
 class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def do_GET(self):
-    	if self.path == '/timestamp':
-	        time = datetime.now()
-	        clientTime = self
-	        #diff = time - clientTime
+        if self.path == '/timestamp':
+            time = datetime.now()
+            clientTime = self
+            #diff = time - clientTime
 
-	        print dir(self)
-	        print self.parse_request
-	        self.send_response(200)
-	        self.send_header('Content-type','text/html')
-	        self.end_headers()
-	        self.wfile.write(sayHello())
+            print dir(self.request)
+
+            self.send_response(200)
+            self.send_header('Content-type','text/html')
+            self.end_headers()
+            self.wfile.write(sayHello())
         return
 
 httpd = SocketServer.ThreadingTCPServer((IP, PORT),CustomHandler)
