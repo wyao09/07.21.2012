@@ -29,7 +29,7 @@ class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write('%s|%lf' % (diff,masterTime))
         # Get method for specific audio file here
-        elif self.path.endswith('.MP3'):
+        elif self.path.endswith('.MP3') or self.path.endswith('.mid'):
             f = open(curdir + self.path)
             self.send_response(200)
             self.send_header('Content-type','audio/mpeg')
