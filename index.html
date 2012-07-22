@@ -5,10 +5,21 @@
         <input type="text" id="timestamp_text" /><button onclick="javascript:updateTime();">Update</button>
         <br/>
 
-        <audio id="audio_" controls="controls" preload>
+        <button class="toggle" id="_audio1">Audio 1</button>
+        <button class="toggle" id="_audio2">Audio 2</button>
+        <button class="toggle" id="_audio3">Audio 3</button>
+        <button class="toggle" id="_audio4">Audio 4</button>
+
+        <audio id="audio1" controls="controls" preload>
             <source src="audio/Track_01.MP3" type="audio/mpeg" />
+        </audio>
+        <audio id="audio2" controls="controls" preload>
             <source src="audio/Track_02.MP3" type="audio/mpeg" />
+        </audio>
+        <audio id="audio3" controls="controls" preload>
             <source src="audio/Track_03.MP3" type="audio/mpeg" />
+        </audio>
+        <audio id="audio4" controls="controls" preload>
             <source src="audio/Track_04.MP3" type="audio/mpeg" />
         </audio>
 
@@ -95,6 +106,7 @@
 
         window.startTime = null;
         window.timerTimeout = null;
+        window.audio = 'audio1';
 
         var clock = new SyncClock();
         clock.sync(function(){
@@ -107,7 +119,7 @@
 
                 if (!window.timerTimeout && window.startTime){
                     window.timerTimeout = setTimeout(function(){
-                        var audio = document.getElementById('audio_');
+                        var audio = document.getElementById(window.audio);
                         audio.play();
                     }, (startTime - self.now()));
                 }
@@ -119,6 +131,10 @@
 
             window.startTime = el.value;
         }
+
+        $('.toggle').click(function(evt){
+            window.audio = evt.target.id.slice(1);
+        });
         </script>
     </body>
 </html>
