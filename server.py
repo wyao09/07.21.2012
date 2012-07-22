@@ -1,8 +1,11 @@
 import SocketServer
 import SimpleHTTPServer
-from datetime import datetime
+import time
 import urlparse
-import py.test
+
+"""
+run with: python server.py
+"""
 
 PORT = 8000
 IP = ''
@@ -10,19 +13,17 @@ IP = ''
 class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path.startswith('/timestamp'):
-            time = datetime.now()
+            masterTime = time.time() * 1000
 
             parsed_path = urlparse.urlparse(self.path)
-            clientUnixTime = parsed_path.query.split('=')[1]
-            clientTime = datetime.fromtimestamp(int(clientUnixTime)).strftime('%Y-%m-%d %H:%M:%S')
+            clientTime = parsed_path.query.split('=')[1]
 
-            print time
-            print clientTime
+            diff = int(masterTime) - int(clientTime)
 
             self.send_response(200)
-            self.send_header('Content-type','text/html')
+            self.send_header('Content-type','application/json')
             self.end_headers()
-            self.wfile.write(clientTime)
+            self.wfile.write(diff)
         else:
             pass
         return
