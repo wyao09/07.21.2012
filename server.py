@@ -23,10 +23,10 @@ class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
             diff = int(masterTime) - int(clientTime)
 
-            self.send_header('Status', '200 OK')
+            self.send_response(200)
             self.send_header('Content-type','application/json')
             self.end_headers()
-            self.wfile.write('%s|%lf' % (diff,masterTime))
+            self.wfile.write('"%s|%lf"' % (diff,masterTime))
         else:
             f = open(curdir + sep + 'index.html')
             self.send_response(200)
