@@ -23,7 +23,7 @@ class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
             diff = int(masterTime) - int(clientTime)
 
-            self.send_response(200)
+            #self.send_response(200)
             #self.send_header('Status', '200')
             self.send_header('Content-type','application/json')
             self.end_headers()
