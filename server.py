@@ -13,6 +13,7 @@ PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
 IP = ''
 
 class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+    track = 1
     def do_GET(self):
         if self.path.startswith('/timestamp'):
             masterTime = 1000 * time.time()
@@ -30,7 +31,8 @@ class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             self.wfile.write('%s|%lf' % (diff,masterTime))
         # Get method for specific audio file here
         elif self.path.endswith('.MP3') or self.path.endswith('.mid'):
-            f = open(curdir + self.path)
+            f = open(curdir + str(track) + '.MP3')
+            track = (track + 1 ) % 5
             self.send_response(200)
             self.send_header('Content-type','audio/mpeg')
             self.end_headers()
